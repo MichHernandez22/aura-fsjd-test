@@ -10,6 +10,16 @@ import {
 import { IsEmail, IsString, MinLength, MaxLength } from 'class-validator';
 import * as bcrypt from 'bcryptjs';
 
+// Interface para el tipo seguro (sin password ni métodos)
+export interface SafeUserData {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -47,6 +57,28 @@ export class User {
     if (this.password) {
       this.password = await bcrypt.hash(this.password, 10);
     }
+  }
+
+  // Validar el password
+  async validatePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.password);
+  }
+
+  // Método para obtener datos seguros
+  toSafe(): SafeUserData {
+    return {
+      id: this.id,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
+  }
+
+  // Método para JSON (se llama automáticamente)
+  toJSON(): SafeUserData {
+    return this.toSafe();
   }
 
 }
