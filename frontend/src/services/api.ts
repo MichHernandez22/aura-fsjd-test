@@ -1,3 +1,5 @@
+/// <reference types="vite/client" />
+
 import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 
 // Tipos basados en la API del backend
@@ -36,9 +38,28 @@ export interface AuthResponse {
   token: string;
 }
 
+const getApiBaseUrl = () => {
+  // 1. Prioridad: Variable de entorno VITE_API_URL (configurada en Vercel/Railway)
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  
+  // 2. Si estamos en desarrollo, usar localhost
+  if (import.meta.env.DEV) {
+    return 'http://localhost:3000/api';
+  }
+  
+  // 3. En producción sin variable definida, intentar inferir
+  // Si el frontend está en Vercel y backend en Railway, necesitarás configurar VITE_API_URL
+  console.warn('⚠️ VITE_API_URL no está definida. Usando URL relativa como fallback.');
+  return '/api'; // Fallback a URL relativa
+};
+
+const API_BASE_URL = getApiBaseUrl();
+
 // Configuración de Axios
 const api: AxiosInstance = axios.create({
-  baseURL: process.env.API_URL || 'http://localhost:3000/api',
+  baseURL: API_BASE_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
