@@ -10,13 +10,13 @@ aura-user-management/
 ## Características Principales
 
 ### Backend
--API RESTful con autenticación JWT
--PostgreSQL + TypeORM con migraciones
--Validación de datos con class-validator
--Arquitectura modular y escalable
--Manejo centralizado de errores
--CORS configurado para múltiples orígenes
--Deploy automatizado en Railway
+- **API RESTful con autenticación JWT
+- **PostgreSQL + TypeORM con migraciones
+- **Validación de datos con class-validator
+- **Arquitectura modular y escalable
+- **Manejo centralizado de errores
+- **CORS configurado para múltiples orígenes
+- **Deploy automatizado en Railway
 
 ### Frontend
 -React 18 con TypeScript y Vite
